@@ -1,6 +1,9 @@
-# Mini WariStock
+# Mini WariStock by 
 
 Test technique Full Stack — Waribei. Application de gestion de produits, stock et ventes pour un commerçant.
+
+### le projet est deployé et accessible via ce lien : `https://waribei-project.vercel.app/`
+### Documentation api avec swagger : `https://waribei-project.onrender.com/api-docs`
 
 ## Structure du dépôt
 
