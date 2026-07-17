@@ -52,7 +52,7 @@ docker compose up --build
 - Backend / Swagger : `http://localhost:3000` / `http://localhost:3000/api-docs`
 - MongoDB : exposé sur `localhost:27017` (utile pour se connecter avec Compass/mongosh depuis l'hôte)
 
-**Insérer les données initiales** (une seule fois, dans un autre terminal pendant que la stack tourne) :
+**Insérer les données initiales** :
 ```bash
 docker compose run --rm seed
 ```
@@ -64,8 +64,6 @@ docker compose down          # arrête les conteneurs, garde les données MongoD
 docker compose down -v       # arrête ET supprime le volume MongoDB (reset complet)
 ```
 
-**Point d'architecture à connaître** (utile en soutenance) : `VITE_API_URL` est une variable **Vite**, donc embarquée dans le bundle JS **au moment du build de l'image**, pas lue au démarrage du conteneur comme le serait une variable backend classique. Si tu changes le port publié du backend dans `docker-compose.yml`, il faut reconstruire l'image frontend (`docker compose build frontend`) pour que la nouvelle URL soit prise en compte — un simple redémarrage du conteneur ne suffit pas.
-
 ## Technologies
 
 | Couche | Stack |
@@ -75,9 +73,6 @@ docker compose down -v       # arrête ET supprime le volume MongoDB (reset comp
 
 Détails complets, variables d'environnement et choix techniques : voir les README de chaque application.
 
-## Pourquoi un seul dépôt (monorepo) ?
-
-L'énoncé du test demande explicitement *"un lien vers un dépôt Git"* (singulier). Pour un projet de cette taille, porté par une seule personne sur un délai court, le monorepo évite la duplication de configuration (`.gitignore`, documentation) et centralise l'historique — tout en permettant un déploiement indépendant de chaque application (Vercel/Render peuvent cibler `apps/frontend` ou `apps/backend` séparément via leur option "Root Directory").
 
 ## Choix architecturaux principaux
 
@@ -90,13 +85,13 @@ L'énoncé du test demande explicitement *"un lien vers un dépôt Git"* (singul
 
 ## Difficultés rencontrées et améliorations envisagées
 
-Voir le détail complet dans `JOURNAL-ERREURS.md`, ainsi que les sections dédiées dans chaque README d'application. En résumé :
+les sections dédiées dans chaque README d'application. En résumé :
 - Plusieurs incompatibilités de types liées aux versions récentes des librairies (`mongoose`, `@nestjs/jwt`) — résolues en vérifiant directement les définitions dans `node_modules` plutôt que de se fier à des exemples potentiellement obsolètes.
 - Amélioration envisagée principale : transactions MongoDB complètes pour la création de vente (actuellement, seule la déduction de stock est atomique, pas l'ensemble de l'opération stock+historique).
 
 ## Bonus implémentés
 
-Authentification JWT, pagination (produits ET historique des ventes), graphiques (Chart.js sur le dashboard), Swagger, interface responsive (vue tableau desktop / cartes mobile), mode sombre, confirmations visuelles après chaque opération réussie, Dockerisation complète (MongoDB + backend + frontend via `docker-compose.yml`, images multi-stage). Non traités faute de temps : tests automatisés, déploiement effectif sur un hébergeur.
+Authentification JWT, pagination (produits ET historique des ventes), graphiques (Chart.js sur le dashboard), Swagger, interface responsive (vue tableau desktop / cartes mobile), mode sombre, confirmations visuelles après chaque opération réussie, Dockerisation complète (MongoDB + backend + frontend via `docker-compose.yml`, images multi-stage). Non traités faute de temps : tests automatisés.
 
 ## Dockerisation — détails techniques
 
