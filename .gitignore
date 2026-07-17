@@ -1,0 +1,23 @@
+# Dépendances (dans n'importe quel sous-dossier du monorepo)
+**/node_modules/
+
+# Variables d'environnement (jamais commit, même en placeholder)
+**/.env
+**/.env.local
+
+# Builds compilés
+**/dist/
+**/build/
+
+# Logs
+**/*.log
+npm-debug.log*
+
+# Fichiers système / éditeurs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Couverture de tests
+**/coverage/
