@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+@import "tailwindcss";
+
+/*
+ * Design system Mini WariStock : outil métier pour un commerçant, pas une vitrine.
+ * Palette éloignée volontairement des clichés IA (crème+terracotta, noir+néon) :
+ * un vert profond "grand livre" comme accent principal (confiance, croissance),
+ * un ocre chaud réservé aux états d'alerte (stock faible), jamais en couleur dominante.
+ *
+ * Signature typographique : tous les chiffres (prix, quantités, montants) utilisent
+ * une police monospace à chasse fixe (IBM Plex Mono) — traitement "livre de comptes",
+ * cohérent avec la nature du produit (un outil qui manipule des nombres en continu).
+ *
+ * MODE SOMBRE : @custom-variant redéfinit `dark:` pour réagir à une classe .dark
+ * posée sur <html> (pilotée par ThemeContext), plutôt qu'à la préférence système
+ * (comportement par défaut de Tailwind) -> l'utilisateur garde le contrôle explicite.
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-ink: #1c1a17;
+  --color-ink-soft: #6b6459;
+  --color-paper: #fbf9f6;
+  --color-surface: #ffffff;
+  --color-border: #e8e3da;
+  --color-overlay: rgb(15 13 10 / 0.5); /* fixe : un fond de modale reste sombre dans les 2 thèmes */
+
+  --color-brand: #0f6b5c;
+  --color-brand-dark: #0a4d42;
+  --color-brand-soft: #e4f0ed;
+
+  --color-amber: #c7702e;
+  --color-amber-soft: #f8ead9;
+
+  --color-danger: #b23a3a;
+  --color-danger-soft: #f8e3e1;
+
+  --color-success: #2f7d4f;
+  --color-success-soft: #e4f2e8;
+
+  --font-display: 'Fraunces', ui-serif, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-ledger: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+/*
+ * On redéfinit ICI les mêmes variables (mêmes noms) avec des valeurs sombres.
+ * Comme chaque utilitaire Tailwind généré (bg-paper, text-ink...) référence
+ * `var(--color-paper)`, `var(--color-ink)`, etc., cette seule redéfinition suffit
+ * à adapter TOUTE l'application au mode sombre — aucun composant n'a besoin
+ * d'ajouter le moindre préfixe `dark:` sur ses classes.
+ */
+.dark {
+  --color-ink: #f2efe9;
+  --color-ink-soft: #a8a096;
+  --color-paper: #16140f;
+  --color-surface: #201d17;
+  --color-border: #3a352c;
+
+  --color-brand: #3aab93;
+  --color-brand-dark: #62c9b0;
+  --color-brand-soft: #1b332c;
+
+  --color-amber: #e2984f;
+  --color-amber-soft: #3a2a15;
+
+  --color-danger: #e2807a;
+  --color-danger-soft: #3a1c19;
+
+  --color-success: #74cf9a;
+  --color-success-soft: #17301f;
+}
+
+body {
+  margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* Chiffres alignés en tableau (tabular-nums) : les montants dans une colonne
+   doivent tous occuper la même largeur pour rester alignés verticalement. */
+.ledger {
+  font-family: var(--font-ledger);
+  font-variant-numeric: tabular-nums;
+}
